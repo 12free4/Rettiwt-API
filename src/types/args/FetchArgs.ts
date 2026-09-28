@@ -212,7 +212,13 @@ export interface ISpaceDetailsOptions {
  * @public
  */
 export interface ITweetFilter {
-	/** The date upto which tweets are to be searched. */
+	/**
+	 * The inclusive UTC calendar date up to which tweets are to be searched.
+	 *
+	 * @remarks
+	 * - Tweet search date filtering has day-level granularity.
+	 * - The time component of the Date is ignored.
+	 */
 	endDate?: Date;
 
 	/** The list of words to exclude from search. */
@@ -291,7 +297,13 @@ export interface ITweetFilter {
 	/** The id of the tweet, after which the tweets are to be searched. */
 	sinceId?: string;
 
-	/** The date starting from which tweets are to be searched. */
+	/**
+	 * The UTC calendar date starting from which tweets are to be searched.
+	 *
+	 * @remarks
+	 * - Tweet search date filtering has day-level granularity.
+	 * - The time component of the Date is ignored.
+	 */
 	startDate?: Date;
 
 	/**

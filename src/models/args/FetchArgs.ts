@@ -149,33 +149,23 @@ export class TweetFilter implements ITweetFilter {
 	}
 
 	/**
-	 * Convert Date object to Twitter string representation.
-	 * eg - 2023-06-23_11:21:06_UTC
+	 * Convert Date object to a UTC date string for Twitter search.
+	 * eg - 2023-06-23
 	 *
 	 * @param date - The date object to convert.
+	 * @param addDay - Whether to add one day for an exclusive upper bound.
 	 * @returns The Twitter string representation of the date.
 	 */
-	private static _dateToTwitterString(date: Date): string {
-		// Converting localized date to UTC date
+	private static _dateToTwitterString(date: Date, addDay = false): string {
 		const utc = new Date(
 			Date.UTC(
 				date.getUTCFullYear(),
 				date.getUTCMonth(),
-				date.getUTCDate(),
-				date.getUTCHours(),
-				date.getUTCMinutes(),
-				date.getUTCSeconds(),
+				date.getUTCDate() + Number(addDay),
 			),
 		);
 
-		/**
-		 * To convert ISO 8601 date string to Twitter date string:
-		 *
-		 * - 'T' between date and time substring is replace with '_'.
-		 * - Milliseconds substring is omitted.
-		 * - '_UTC' is appended as suffix.
-		 */
-		return utc.toISOString().replace(/T/, '_').replace(/\..+/, '') + '_UTC';
+		return utc.toISOString().slice(0, 10);
 	}
 
 	/**
@@ -198,7 +188,7 @@ export class TweetFilter implements ITweetFilter {
 				this.minRetweets ? `min_retweets:${this.minRetweets}` : '',
 				this.language ? `lang:${this.language}` : '',
 				this.startDate ? `since:${TweetFilter._dateToTwitterString(this.startDate)}` : '',
-				this.endDate ? `until:${TweetFilter._dateToTwitterString(this.endDate)}` : '',
+				this.endDate ? `until:${TweetFilter._dateToTwitterString(this.endDate, true)}` : '',
 				this.sinceId ? `since_id:${this.sinceId}` : '',
 				this.maxId ? `max_id:${this.maxId}` : '',
 				this.quoted ? `quoted_tweet_id:${this.quoted}` : '',
